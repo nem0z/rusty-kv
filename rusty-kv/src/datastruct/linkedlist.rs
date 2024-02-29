@@ -16,6 +16,32 @@ impl<T> Node<T> {
 pub struct Linkedlist<T> {
     head: Option<Box<Node<T>>>
 }
+
+impl<T: fmt::Display> fmt::Display for Linkedlist<T> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        if let Err(e) = write!(f, "[") {
+            return Err(e);
+        }
+
+        if let Some(head) = &self.head {
+            if let Err(e) = write!(f, "{}", head.value) {
+                return Err(e);
+            }
+
+            let mut current = head;
+            while let Some(next) = &current.next {
+                if let Err(e) = write!(f, ", {}", next.value) {
+                    return Err(e);
+                }
+                current = next;
+            }
+        }
+
+        return write!(f, "]");
+
+    }
+}
+
 #[allow(dead_code)]
 impl<T> Linkedlist<T> {
     pub fn new() -> Self {
@@ -32,5 +58,9 @@ impl<T> Linkedlist<T> {
 
         return Linkedlist { head: prev };
 }
-}
+
+    pub fn push(&mut self, val: T) {
+        let node = Node::new_with_next(val, self.head.take());
+        self.head = Some(Box::new(node));
+    }
 
