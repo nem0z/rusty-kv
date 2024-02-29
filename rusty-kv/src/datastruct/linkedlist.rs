@@ -76,3 +76,20 @@ impl<T> Linkedlist<T> {
         *current = Some(Box::new(Node::new(val)));
     }
 
+    pub fn is_sorted(&self) -> bool where T: std::cmp::PartialOrd {
+        let mut prev = match &self.head {
+            Some(node) => node,
+            None => return true,
+        };
+
+        while let Some(current) = &prev.next {
+            if current.value < prev.value {
+                return false;
+            }
+
+            prev = current;
+        }
+
+        return true;
+    }
+}
