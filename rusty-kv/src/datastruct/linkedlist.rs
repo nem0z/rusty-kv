@@ -57,7 +57,7 @@ impl<T> Linkedlist<T> {
         }
 
         return Linkedlist { head: prev };
-}
+    }
 
     pub fn push(&mut self, val: T) {
         let node = Node::new_with_next(val, self.head.take());
@@ -91,5 +91,50 @@ impl<T> Linkedlist<T> {
         }
 
         return true;
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_new_linkedlist() {
+        let list: Linkedlist<i32> = Linkedlist::new();
+        assert!(list.head.is_none());
+    }
+
+    #[test]
+    fn test_new_linkedlist_from_values() {
+        let list: Linkedlist<i32> = Linkedlist::new_from_values(&[8, 4, 3, 12, 11]);
+        assert_eq!(list.to_string(), "[11, 12, 3, 4, 8]");
+    }
+
+    #[test]
+    fn test_push() {
+        let mut list = Linkedlist::new();
+        list.push(1);
+        list.push(2);
+        list.push(3);
+        list.push(4);
+
+        assert_eq!(list.to_string(), "[4, 3, 2, 1]");
+    }
+
+    #[test]
+    fn test_is_sorted() {
+        let sorted_list = Linkedlist::new_from_values(&[3, 2, 1]);
+        let unsorted_list = Linkedlist::new_from_values(&[3, 1, 2]);
+        assert!(sorted_list.is_sorted());
+        assert!(!unsorted_list.is_sorted());
+    }
+
+    #[test]
+    fn test_push_sort() {
+        let mut list = Linkedlist::new_from_values(&[92, 23, 11]);
+        list.push_sort(46);
+        list.push_sort(8);
+        list.push_sort(111);
+        assert!(list.is_sorted());
     }
 }
