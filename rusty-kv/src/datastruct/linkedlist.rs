@@ -68,6 +68,18 @@ impl<T> Linkedlist<T> {
         return Linkedlist { head: prev };
     }
 
+    pub fn length(self) -> usize {
+        let mut length: usize = 0;
+
+        let mut current = self.head;
+        while let Some(node) = current {
+            length += 1;
+            current = node.next;
+        }
+
+        return length;
+    }
+
     pub fn push(&mut self, val: T) {
         let node = Node::new_with_next(val, self.head.take());
         self.head = Some(Box::new(node));
@@ -117,6 +129,14 @@ mod tests {
     fn test_new_linkedlist_from_values() {
         let list: Linkedlist<i32> = Linkedlist::new_from_values(&[8, 4, 3, 12, 11]);
         assert_eq!(list.to_string(), "[11, 12, 3, 4, 8]");
+    }
+
+    #[test]
+    fn test_length() {
+        let list: Linkedlist<i32> = Linkedlist::new_from_values(&[8, 4, 3, 12, 11]);
+        let empty_list: Linkedlist<i32> = Linkedlist::new();
+        assert_eq!(list.length(), 5);
+        assert_eq!(empty_list.length(), 0);
     }
 
     #[test]
