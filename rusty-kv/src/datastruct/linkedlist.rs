@@ -64,3 +64,15 @@ impl<T> Linkedlist<T> {
         self.head = Some(Box::new(node));
     }
 
+    pub fn push_sort(&mut self, val: T) where T: std::cmp::PartialOrd {
+        let mut current = &mut self.head;
+        while let Some(c) = current {
+            if c.value >= val {
+                c.next = Some(std::mem::replace(c, Box::new(Node::new(val))));
+                return;
+            }
+            current = &mut c.next;
+        }
+        *current = Some(Box::new(Node::new(val)));
+    }
+
