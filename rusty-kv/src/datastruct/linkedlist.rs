@@ -1,7 +1,16 @@
+use std::fmt;
+
 struct Node<T> {
     value: T,
     next: Option<Box<Node<T>>>
 }
+
+impl<T: fmt::Display> fmt::Display for Node<T> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        return write!(f, "{}", self.value);
+    }
+}
+
 #[allow(dead_code)]
 impl<T> Node<T> {
     pub fn new(val: T) -> Self {
